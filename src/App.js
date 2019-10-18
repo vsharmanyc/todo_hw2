@@ -22,6 +22,61 @@ class App extends Component {
     this.setState({currentList: null});
   }
 
+  textFieldChanged(){
+    
+  }
+
+  moveUp = (key) => {
+    console.log("moveUp");
+    console.log(key);
+    if(key != 0){
+      let list = [...this.state.todoLists];
+      for(let i = 0; i < list.length; i++){
+        if(list[i] == this.state.currentList){
+          let temp = list[i].items[key]
+          list[i].items[key] =  list[i].items[key - 1];
+          list[i].items[key - 1] = temp;
+          list[i].items[key].key += 1;
+          list[i].items[key - 1].key -= 1;
+        }
+      }  
+    this.setState({todoLists:list});
+    }
+  }
+
+  moveDown = (key) => {
+    console.log("moveDown");
+    console.log(key);
+    let list = [...this.state.todoLists];
+    if(key != list.length - 1){
+      for(let i = 0; i < list.length; i++){
+        if(list[i] == this.state.currentList){
+          let temp = list[i].items[key]
+          list[i].items[key] =  list[i].items[key + 1];
+          list[i].items[key + 1] = temp;
+          list[i].items[key].key -= 1;
+          list[i].items[key + 1].key += 1;
+        }
+      }  
+    this.setState({todoLists:list});
+    }
+  }
+
+  deleteItem = (key) => {
+    console.log("deleteItem");
+    console.log(key);
+    let list = [...this.state.todoLists];
+    for(let i = 0; i < list.length; i++){
+      if(list[i] == this.state.currentList){
+        list[i].items.splice(key,1);
+        for(let j = key; j < list[i].items.length; j++){
+          list[i].items[j].key -= 1;
+        }
+      }
+    }  
+    this.setState({todoLists:list});
+  }
+
   loadList = (todoListToLoad) => {
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     this.setState({currentList: todoListToLoad});
@@ -38,7 +93,11 @@ class App extends Component {
       case AppScreen.LIST_SCREEN:            
         return <ListScreen
           goHome={this.goHome.bind(this)}
-          todoList={this.state.currentList} />;
+          todoList={this.state.currentList}
+          moveUp={this.moveUp}
+          moveDown={this.moveDown}
+          deleteItem={this.deleteItem} 
+          />;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen />;
       default:
