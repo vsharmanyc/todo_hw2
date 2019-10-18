@@ -166,6 +166,14 @@ body {
 #item_form_cancel_button {}
 
 /* ITEM SCREEN CLASSES */
+#delete_item, #move_up, #move_down{
+  height: 48px;
+  width: 48px;
+  background-clip: content-box;
+  background-color: var(--swatch-accent);
+  border-radius: 10px;
+}
+
 .item_prompt {
   font-weight: bold;
 }
