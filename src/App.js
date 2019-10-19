@@ -13,8 +13,8 @@ const AppScreen = {
 let dictionary = {
   key: "",
   description: "",
-  assigned: "",
-  date: "",
+  due_date: "",
+  assigned_to: "",
   completed: ""
 };
 
@@ -117,31 +117,42 @@ class App extends Component {
   }
 
   addInfo = (e) =>{
-    if(e.target.name == "addDesc")
+    if(e.target.name == "description")
     {
       dictionary.description = e.target.value;
     }
-    else if(e.target.name == "addAssign")
+    else if(e.target.name == "assignedTo")
     {
-      dictionary.assigned = e.target.value;
+      dictionary.assigned_to = e.target.value;
     }
-    else if(e.target.name == "addDate")
+    else if(e.target.name == "date")
     {
-      dictionary.date = e.target.value;
+      dictionary.due_date = e.target.value;
     }
-    else if(e.target.name == "addCompleted")
+    else if(e.target.name == "completed")
     {
-      dictionary.completed = e.target.value;
+      dictionary.completed = e.target.checked;
     }
   }
 
+  sortByTask = () => {
+    console.log("sortByTask");
+  }
+
+  sortByDueDate = () => {
+    console.log("sortByDueDate");
+  }
+
+  sortByStatus = () => {
+    console.log("sortByStatus");
+  }
   
   cancel = () => {
     this.setState({currentScreen: AppScreen.LIST_SCREEN})
     dictionary.description = "";
-    dictionary.assigned = "";
+    dictionary.assigned_to = "";
     dictionary.completed = "";
-    dictionary.date = "";
+    dictionary.due_date = "";
   }
 
   submit = () => {
@@ -159,9 +170,9 @@ class App extends Component {
     this.setState({todolists: copy});
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     dictionary.description = "";
-    dictionary.assigned = "";
+    dictionary.assigned_to = "";
     dictionary.completed = "";
-    dictionary.date = "";
+    dictionary.due_date = "";
 
   }
 
@@ -187,6 +198,9 @@ class App extends Component {
           deleteItem={this.deleteItem}
           addListItem={this.addListItem}
           nameChange={this.nameChange} 
+          sortByTask={this.sortByTask}
+          sortByDueDate={this.sortByDueDate}
+          sortByStatus={this.sortByStatus}
           />;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen 
