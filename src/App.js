@@ -30,10 +30,6 @@ class App extends Component {
     this.setState({currentList: null});
   }
 
-  textFieldChanged(){
-    
-  }
-
   moveUp = (key) => {
     console.log("moveUp");
     console.log(key);
@@ -137,7 +133,25 @@ class App extends Component {
 
   sortByTask = () => {
     console.log("sortByTask");
-  }
+    let list = [...this.state.todoLists];
+    for(let i = 0; i < list.length; i++){
+      if(list[i] == this.state.currentList){
+        for(let j = 0; j < list[i].items.length - 1; j++){
+          let desc1 = list[i].items[j].description;
+          let desc2 = list[i].items[j+1].description;
+          list[i].items.sort(function(desc1, desc2){
+            if(desc1 < desc2)
+              return -1;
+            else if(desc1 > desc2)
+              return 1;
+            else
+              return 0;
+          }); 
+        }
+      }
+    }
+  }  
+  
 
   sortByDueDate = () => {
     console.log("sortByDueDate");
