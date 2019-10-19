@@ -31,16 +31,19 @@ export class ListScreen extends Component {
                     <div id="list_details_name_container" className="text_toolbar">
                         <span id="list_name_prompt">Name:</span>
                         <input 
-                            defaultValue={this.getListName()} 
+                            value={this.getListName()}
+                            onChange = {this.props.nameChange}
                             type="text" 
+                            name="name"
                             id="list_name_textfield" />
                     </div>
                     <div id="list_details_owner_container" className="text_toolbar">
                         <span id="list_owner_prompt">Owner:</span>
                         <input 
-                            onChange= {this.props.textFieldChanged}
-                            defaultValue={this.getListOwner()}
+                            value={this.getListOwner()}
+                            onChange = {this.props.nameChange}
                             type="text" 
+                            name="owner"
                             id="list_owner_textfield" 
                             />
                     </div>
@@ -49,6 +52,11 @@ export class ListScreen extends Component {
                     moveUp = {this.props.moveUp}
                     moveDown = {this.props.moveDown}
                     deleteItem = {this.props.deleteItem}/>
+                <div className = 'list_item_add_card'>
+                    <img src = 'images/icons/AddItem.png' width="50" height="50"
+                    onClick = {this.props.addListItem}
+                    />
+                </div>
             </div>
         )
     }

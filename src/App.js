@@ -10,6 +10,14 @@ const AppScreen = {
   ITEM_SCREEN: "ITEM_SCREEN"
 }
 
+let dictionary = {
+  key: "",
+  description: "",
+  assigned: "",
+  date: "",
+  completed: ""
+};
+
 class App extends Component {
   state = {
     currentScreen: AppScreen.HOME_SCREEN,
@@ -77,6 +85,86 @@ class App extends Component {
     this.setState({todoLists:list});
   }
 
+  nameChange = (e) => {
+    console.log("change");
+    if(e.target.name == "name")
+    {
+      console.log("name");
+      let copy = [...this.state.todoLists];
+      for(let i = 0; i < copy.length; i++)
+      {
+        if(copy[i] == this.state.currentList)
+          copy[i].name = e.target.value;
+      }
+      this.setState({todolists: copy});
+    }
+    else if(e.target.name == "owner")
+    {
+      console.log("owner");
+      let copy = [...this.state.todoLists];
+      for(let i = 0; i < copy.length; i++)
+      {
+        if(copy[i] == this.state.currentList)
+          copy[i].owner = e.target.value;
+      }
+      this.setState({todolists: copy});
+    }
+    
+  }
+
+  addListItem = () =>{
+    this.setState({currentScreen: AppScreen.ITEM_SCREEN})
+  }
+
+  addInfo = (e) =>{
+    if(e.target.name == "addDesc")
+    {
+      dictionary.description = e.target.value;
+    }
+    else if(e.target.name == "addAssign")
+    {
+      dictionary.assigned = e.target.value;
+    }
+    else if(e.target.name == "addDate")
+    {
+      dictionary.date = e.target.value;
+    }
+    else if(e.target.name == "addCompleted")
+    {
+      dictionary.completed = e.target.value;
+    }
+  }
+
+  
+  cancel = () => {
+    this.setState({currentScreen: AppScreen.LIST_SCREEN})
+    dictionary.description = "";
+    dictionary.assigned = "";
+    dictionary.completed = "";
+    dictionary.date = "";
+  }
+
+  submit = () => {
+    let copy = [...this.state.todoLists];
+    for(let i = 0; i < copy.length; i++)
+    {
+      if(copy[i] == this.state.currentList)
+      {
+        dictionary.key = copy[i].items.length;
+        let dcopy = JSON.parse(JSON.stringify(dictionary));
+        copy[i].items.push(dcopy);
+        break;
+      }
+    }
+    this.setState({todolists: copy});
+    this.setState({currentScreen: AppScreen.LIST_SCREEN});
+    dictionary.description = "";
+    dictionary.assigned = "";
+    dictionary.completed = "";
+    dictionary.date = "";
+
+  }
+
   loadList = (todoListToLoad) => {
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     this.setState({currentList: todoListToLoad});
@@ -96,10 +184,16 @@ class App extends Component {
           todoList={this.state.currentList}
           moveUp={this.moveUp}
           moveDown={this.moveDown}
-          deleteItem={this.deleteItem} 
+          deleteItem={this.deleteItem}
+          addListItem={this.addListItem}
+          nameChange={this.nameChange} 
           />;
       case AppScreen.ITEM_SCREEN:
-        return <ItemScreen />;
+        return <ItemScreen 
+        addInfo={this.addInfo}
+        dictionary={dictionary}
+        submit={this.submit}
+        cancel={this.cancel}/>;
       default:
         return <div>ERROR</div>;
     }
