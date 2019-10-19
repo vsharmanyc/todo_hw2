@@ -9,6 +9,9 @@ const AppScreen = {
   LIST_SCREEN: "LIST_SCREEN",
   ITEM_SCREEN: "ITEM_SCREEN"
 }
+let bool1 = false;
+let bool2 = false;
+let bool3 = false;
 
 let dictionary = {
   key: "",
@@ -131,68 +134,95 @@ class App extends Component {
     }
   }
 
+
   sortByTask = () => {
-    console.log("sortByTask");
-    let list = [...this.state.todoLists];
-    for(let i = 0; i < list.length; i++){
-      if(list[i] == this.state.currentList){
-        for(let j = 0; j < list[i].items.length - 1; j++){
-          let desc1 = list[i].items[j].description;
-          let desc2 = list[i].items[j+1].description;
-          list[i].items.sort(function(desc1, desc2){
-            if(desc1 < desc2)
-              return -1;
-            else if(desc1 > desc2)
-              return 1;
-            else
-              return 0;
-          }); 
-        }
+    bool1 = !bool1;
+    let copy = [...this.state.todoLists]; 
+    for(let i = 0; i < copy.length; i++)
+      {
+        if(copy[i] == this.state.currentList)
+          copy[i].items.sort(this.descComp);
       }
+      this.setState({todolists: copy});
+      this.resetKeys();
+  }
+
+  descComp(item1, item2){
+    let temp;
+    
+    if(bool1)
+    {
+      temp = item1;
+      item1 = item2;
+      item2 = temp;
     }
-  }  
-  
+    console.log(item1);
+    console.log(item2);
+    
+    if (item1.description < item2.description)
+      return -1;
+    else if (item1.description > item2.description)
+      return 1;
+    else
+      return 0;
+  }
 
   sortByDueDate = () => {
-    console.log("sortByDueDate");
-    let list = [...this.state.todoLists];
-    for(let i = 0; i < list.length; i++){
-      if(list[i] == this.state.currentList){
-        for(let j = 0; j < list[i].items.length - 1; j++){
-          let date1 = list[i].items[j].due_date;
-          let date2 = list[i].items[j+1].due_date;
-          list[i].items.sort(function(date1, date2){
-            if(date1 < date2)
-              return -1;
-            else if(date1 > date2)
-              return 1;
-            else
-              return 0;
-          }); 
-        }
+    bool2 = !bool2;
+    let copy = [...this.state.todoLists]; 
+    for(let i = 0; i < copy.length; i++)
+      {
+        if(copy[i] == this.state.currentList)
+          copy[i].items.sort(this.dateComp);
       }
+      this.setState({todolists: copy});
+      this.resetKeys();
+  }
+
+  dateComp(date1, date2)
+  {
+    let temp;
+    if(bool2)
+    {
+      temp = date1;
+      date1 = date2;
+      date2 = temp;
     }
+    if (date1.due_date < date2.due_date)
+      return -1;
+    else if (date1.due_date > date2.due_date)
+      return 1;
+    else
+      return 0;
   }
 
   sortByStatus = () => {
-    console.log("sortByStatus");
-    let list = [...this.state.todoLists];
-    for(let i = 0; i < list.length; i++){
-      if(list[i] == this.state.currentList){
-        for(let j = 0; j < list[i].items.length - 1; j++){
-          let status1 = list[i].items[j].status;
-          let status2 = list[i].items[j+1].status;
-          list[i].items.sort(function(status1, status2){
-            if(status1 < status2)
-              return -1;
-            else if(status1 > status2)
-              return 1;
-            else
-              return 0;
-          }); 
-        }
+    bool3 = !bool3;
+    let copy = [...this.state.todoLists]; 
+    for(let i = 0; i < copy.length; i++)
+      {
+        if(copy[i] == this.state.currentList)
+          copy[i].items.sort(this.statusComp);
       }
+      this.setState({todolists: copy});
+      this.resetKeys();
+  }
+
+  statusComp(item1, item2)
+  {
+    let temp;
+    if(bool3)
+    {
+      temp = item1;
+      item1 = item2;
+      item2 = temp;
     }
+    if (item1.completed < item2.completed)
+      return -1;
+    else if (item1.completed > item2.completed)
+      return 1;
+    else
+      return 0;
   }
 
   resetKeys(){
